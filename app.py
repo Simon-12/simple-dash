@@ -1,7 +1,7 @@
 import dash
 from dash import dcc, html
 import dash_bootstrap_components as dbc
-from dash.long_callback import DiskcacheLongCallbackManager
+from dash import DiskcacheManager
 from flask import Flask
 from long_callback import register_long_callback
 import diskcache
@@ -9,11 +9,11 @@ import diskcache
 
 # DiskCache
 cache = diskcache.Cache('./cache')
-long_callback_manager = DiskcacheLongCallbackManager(cache)
+long_callback_manager = DiskcacheManager(cache)
 
 # Create app
 server = Flask(__name__)
-app = dash.Dash(server=server, long_callback_manager=long_callback_manager)
+app = dash.Dash(server=server, background_callback_manager=long_callback_manager)
 app.title = 'My App'
 server = app.server
 register_long_callback(app)
